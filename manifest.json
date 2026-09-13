@@ -1,0 +1,60 @@
+{
+  "manifest_version": 3,
+  "name": "X Spaces Volume Control",
+  "version": "1.0.0",
+  "description": "Volume control for X/Twitter Spaces: a 1-100% slider that writes localStorage \"volume\" (stored as 0.01-1), applies live without a page reload, and adds an in-page slider.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "spaces-volume@local.extension",
+      "strict_min_version": "140.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    },
+    "gecko_android": {
+      "strict_min_version": "142.0"
+    }
+  },
+  "permissions": ["storage", "scripting", "tabs"],
+  "host_permissions": ["*://x.com/*", "*://twitter.com/*"],
+  "icons": {
+    "16": "icons/icon.svg",
+    "32": "icons/icon.svg",
+    "48": "icons/icon.svg",
+    "96": "icons/icon.svg",
+    "128": "icons/icon.svg"
+  },
+  "action": {
+    "default_title": "X Spaces Volume",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon.svg",
+      "32": "icons/icon.svg",
+      "48": "icons/icon.svg",
+      "96": "icons/icon.svg"
+    },
+    "theme_icons": [
+      { "light": "icons/icon-white.svg", "dark": "icons/icon-black.svg", "size": 16 },
+      { "light": "icons/icon-white.svg", "dark": "icons/icon-black.svg", "size": 32 }
+    ]
+  },
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://x.com/*", "*://twitter.com/*"],
+      "js": ["content/volume-hook.js"],
+      "run_at": "document_start",
+      "world": "MAIN",
+      "all_frames": true
+    },
+    {
+      "matches": ["*://x.com/*", "*://twitter.com/*"],
+      "js": ["content/volume-ui.js"],
+      "run_at": "document_idle",
+      "world": "ISOLATED",
+      "all_frames": false
+    }
+  ]
+}

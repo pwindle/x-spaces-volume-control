@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="X Spaces volume">
+  <!-- Glyph source
+       font   : DejaVu Sans Bold
+       file   : DejaVuSans-Bold.ttf
+       glyph  : u1D54F
+       licence: Bitstream Vera / DejaVu (permissive, redistribution allowed)
+       Derived with tools/glyph-to-svg.py - regenerate rather than hand-edit.
+  -->
+  <title>X Spaces volume</title>
+
+  <!-- Transparent background by design: no tile, so the mark sits correctly
+       on both light and dark toolbars. The colour is the X accent blue, which
+       stays legible against either. -->
+  <path fill="#000000" fill-rule="nonzero" d="M72.17 95.53 26.73 32.47H17.83L63.32 95.53ZM84.00 101.57H60.25L40.92 74.79L21.60 101.57H14.15L37.20 69.66L6.00 26.43H29.80L49.08 53.16L68.40 26.43H75.85L52.80 58.34Z"/>
+
+  <!-- Sound waves -->
+  <g fill="none" stroke="#000000" stroke-linecap="round">
+    <path d="M88 52a20 20 0 0 1 0 24" stroke-width="9"/>
+    <path d="M104 38a36 36 0 0 1 0 52" stroke-width="9" opacity="0.78"/>
+  </g>
+</svg>

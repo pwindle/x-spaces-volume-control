@@ -1,0 +1,271 @@
+:root {
+  color-scheme: dark;
+  --bg: #16191d;
+  --panel: #1e222a;
+  --line: #2c323c;
+  --text: #eef3f4;
+  --muted: #9aa7b2;
+  --accent: #1d9bf0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  width: 300px;
+  margin: 0;
+  padding: 12px;
+  background: var(--bg);
+  color: var(--text);
+  font: 12px/1.45 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+
+.logo {
+  display: block;
+  width: 18px;
+  height: 18px;
+  flex: none;
+  border-radius: 5px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: #2a2f38;
+  color: var(--muted);
+  white-space: nowrap;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.badge.ok {
+  background: rgba(29, 155, 240, 0.18);
+  color: #8ecdf7;
+}
+
+.badge.warn {
+  background: rgba(244, 183, 64, 0.16);
+  color: #f4b740;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.value-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.value-row label {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+#readout {
+  font-size: 18px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 20px;
+  background: transparent;
+  cursor: pointer;
+  margin: 0;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--accent) 0%,
+    var(--accent) var(--fill, 100%),
+    #333a45 var(--fill, 100%),
+    #333a45 100%
+  );
+}
+
+input[type="range"]::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: #333a45;
+}
+
+input[type="range"]::-moz-range-progress {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: -6px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--accent);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--accent);
+}
+
+.ticks {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 10px;
+  margin-bottom: 8px;
+}
+
+.number-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+input[type="number"] {
+  width: 72px;
+  padding: 5px 7px;
+  background: #12151a;
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.pos-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 6px 8px;
+  padding-top: 9px;
+  border-top: 1px solid var(--line);
+}
+
+.pos-grid > label {
+  color: var(--muted);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+select {
+  width: 100%;
+  padding: 5px 7px;
+  background: #12151a;
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.offset-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.offset-cell input[type="number"] {
+  width: 64px;
+}
+
+.unit {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+code {
+  background: #12151a;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 0 3px;
+  font-size: 10px;
+}
+
+.toggle {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 7px 0;
+  border-top: 1px solid var(--line);
+  cursor: pointer;
+}
+
+.toggle:first-of-type {
+  border-top: 0;
+}
+
+.toggle input {
+  margin: 2px 0 0;
+  accent-color: var(--accent);
+}
+
+.toggle span {
+  font-weight: 600;
+}
+
+.toggle em {
+  display: block;
+  font-style: normal;
+  font-weight: 400;
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 2px;
+}
+
+footer {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 10px;
+  min-height: 12px;
+}

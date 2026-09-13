@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>X Spaces Volume</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <img class="logo" src="../icons/icon.svg" alt="" width="18" height="18" />
+        <h1>X Spaces volume</h1>
+      </div>
+      <span class="badge" id="status">checking…</span>
+    </header>
+
+    <section class="card">
+      <div class="value-row">
+        <label for="slider">Level</label>
+        <output id="readout">100%</output>
+      </div>
+      <input id="slider" type="range" min="1" max="100" step="1" value="100" />
+      <div class="ticks"><span>1%</span><span>50%</span><span>100%</span></div>
+      <div class="number-row">
+        <input id="number" type="number" min="1" max="100" step="1" value="100" />
+        <span class="hint">stored in <code>localStorage.volume</code> as 0.01–1</span>
+      </div>
+
+      <label class="toggle">
+        <input type="checkbox" id="showslider" checked />
+        <span>
+          Show in-page slider
+          <em>Adds a floating slider onto Spaces pages.</em>
+        </span>
+      </label>
+
+      <div class="pos-grid">
+        <label for="corner">Position</label>
+        <select id="corner">
+          <option value="bottom-left">Bottom left</option>
+          <option value="bottom-right">Bottom right</option>
+          <option value="top-left">Top left</option>
+          <option value="top-right">Top right</option>
+        </select>
+
+        <label for="offsetx" id="offsetx-label">From left</label>
+        <span class="offset-cell">
+          <input id="offsetx" type="number" min="0" max="999" step="1" value="16" />
+          <span class="unit">px</span>
+        </span>
+
+        <label for="offsety" id="offsety-label">From bottom</label>
+        <span class="offset-cell">
+          <input id="offsety" type="number" min="0" max="999" step="1" value="16" />
+          <span class="unit">px</span>
+        </span>
+      </div>
+    </section>
+
+    <footer>
+      <span id="detail"></span>
+    </footer>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
