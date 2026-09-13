@@ -209,17 +209,6 @@ as "native", so its writes flowed through our setter, and our level appeared to
 apply only when *its* apply cycle ran. If you see this warning, disable the other
 extension.
 
-## About `space-example.html`
-
-The saved snapshot in this workspace is DOM-only — 514 `div`s, 11 `button`s,
-2 `canvas` elements, and **no `<script>`, no `<audio>`/`<video>`, no volume
-control** of any kind (its labels are `Collapse`, `Share`, `Manage Space`,
-`Request to speak`, `React`, `Picture-in-Picture`, …). There is therefore no
-existing element to attach to or to drive, which is why the slider is injected
-(bottom-left, in a shadow root so X's CSS can't affect it) and why the level is
-pushed through `localStorage["volume"]` plus API patches rather than by
-manipulating a found control.
-
 ## Troubleshooting
 
 | Symptom | Try |
