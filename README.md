@@ -1,5 +1,9 @@
 # X Spaces Volume Control (Firefox extension)
 
+<p align="center">
+  <img src="docs/logo.png" width="150" alt="X Spaces Volume Control logo: a Mathematical Double-Struck Capital X with sound waves">
+</p>
+
 Controls the playback volume of X/Twitter **Spaces** by driving the page's
 `localStorage["volume"]` value, and applies the change **live** (no page reload)
 by patching the page's audio APIs. It also injects an in-page slider so you can
@@ -19,9 +23,10 @@ spaces-volume/
 │   ├── popup.html             toolbar popup: live slider, position, toggles
 │   ├── popup.css
 │   └── popup.js               talks to the tab, persists settings
-└── content/
-    ├── volume-hook.js         MAIN world, document_start: audio API patches
-    └── volume-ui.js           ISOLATED world: localStorage + in-page slider
+├── content/
+│   ├── volume-hook.js         MAIN world, document_start: audio API patches
+│   └── volume-ui.js           ISOLATED world: localStorage + in-page slider
+└── docs/                      logo + screenshots (not part of the extension)
 ```
 
 Three vectors of the same mark — the Mathematical Double-Struck Capital X
@@ -40,6 +45,10 @@ the icon stays sharp on HiDPI screens. All three have a **transparent
 background** (no tile), so each has to carry itself against whatever sits behind
 it — which is why the fallback stays the accent blue, a colour that survives on
 either toolbar.
+
+`docs/logo.png` is the same mark rendered to a 516×416 raster on a transparent
+background, for places that will not take SVG — a store listing, a repo social
+preview. It is not square, so it is not a substitute for the `icons` entries.
 
 ### Theme-aware toolbar icon
 
@@ -84,6 +93,27 @@ with Windows that contain the glyph — notably **Cambria Math**, the canonical
 maths font — are proprietary ("© Microsoft Corporation. All rights reserved"),
 so their outlines must not be redistributed in an extension. The bold weight also
 keeps the glyph legible at 16 px in the toolbar.
+
+## Screenshots
+
+The in-page slider over a live Space — parked bottom-left here, outlined in red
+so it stands out against the dark UI:
+
+![The in-page slider sitting over a live X Space, below the host controls](docs/spaces-page.png)
+
+The toolbar popup: level slider, the in-page slider toggle, and its corner and
+offsets.
+
+![The toolbar popup showing the level slider, the in-page slider toggle and the position controls](docs/popup.png)
+
+Close-up of the in-page slider. It applies as you drag, and the chevron collapses
+it to a small pill.
+
+![Close-up of the in-page slider showing the percentage readout and the chevron collapse button](docs/in-page-slider.png)
+
+None of `docs/` is part of the built extension, so exclude it when packaging:
+`web-ext build --ignore-files "docs"`. Use `"docs"` rather than `"docs/**"` —
+the latter still leaves an empty `docs/` entry in the zip.
 
 ## Install (temporary, for development)
 
