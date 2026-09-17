@@ -29,50 +29,6 @@ spaces-volume/
 └── docs/                      logo + screenshots (not part of the extension)
 ```
 
-Three vectors of the same mark — the Mathematical Double-Struck Capital X
-(**𝕏**, U+1D54F) with sound waves — byte-identical apart from the fill colour, so
-the shape cannot drift between them:
-
-| File | Colour | Used for |
-| --- | --- | --- |
-| `icons/icon.svg` | X blue `#1d9bf0` | the extension icon (`icons`), the `default_icon` fallback, and the popup header |
-| `icons/icon-white.svg` | white | the toolbar button on **dark** themes |
-| `icons/icon-black.svg` | black | the toolbar button on **light** themes |
-
-Firefox renders SVG icons natively, so no separate raster sizes are needed and
-the icon stays sharp on HiDPI screens. All three have a **transparent
-background** (no tile), so each has to carry itself against whatever sits behind
-it — which is why the fallback stays the accent blue, a colour that survives on
-either toolbar.
-
-`docs/logo.png` is the same mark rendered to a 516×416 raster on a transparent
-background, for places that will not take SVG — a store listing, a repo social
-preview. It is not square, so it is not a substitute for the `icons` entries.
-
-### Theme-aware toolbar icon
-
-`action.theme_icons` (Firefox 109+; Chrome ignores it) swaps the toolbar icon
-with the theme. **The `light`/`dark` keys name the theme's *text* colour, not the
-icon's**, which is the easy part to get backwards:
-
-- `"light"` — a theme using light text, i.e. a **dark** theme → the **white** icon
-- `"dark"` — a theme using dark text, i.e. a **light** theme → the **black** icon
-
-`default_icon` is kept as the blue icon for browsers that ignore `theme_icons`.
-
-### The mark
-
-The glyph is the **real U+1D54F design** (including the doubled
-`top-left → bottom-right` stroke), stored as vector path data rather than live
-`<text>` so it needs no maths font installed — a `<text>` element would render as
-tofu (▯) on systems without one. The outline is derived from **DejaVu Sans Bold**,
-whose permissive licence allows it to be redistributed inside a shipped
-extension; not every font containing the glyph is usable that way. The bold
-weight keeps the glyph legible at 16 px in the toolbar.
-
-Chrome does not support SVG manifest icons, so if you ever port this extension
-there, export PNGs at 16/32/48/96/128 px and reference those instead.
-
 ## Screenshots
 
 The in-page slider over a live Space — parked bottom-left here, outlined in red
@@ -241,3 +197,49 @@ Two Node harnesses exercise the logic without a browser (no dependencies):
 node tools/hook-test.mjs   # volume math: scaling, echo/compounding, clamping, bridge
 node tools/ui-test.mjs     # content-script startup, localStorage writes, popup messaging
 ```
+
+## Icons
+
+Three vectors of the same mark — the Mathematical Double-Struck Capital X
+(**𝕏**, U+1D54F) with sound waves — byte-identical apart from the fill colour, so
+the shape cannot drift between them:
+
+| File | Colour | Used for |
+| --- | --- | --- |
+| `icons/icon.svg` | X blue `#1d9bf0` | the extension icon (`icons`), the `default_icon` fallback, and the popup header |
+| `icons/icon-white.svg` | white | the toolbar button on **dark** themes |
+| `icons/icon-black.svg` | black | the toolbar button on **light** themes |
+
+Firefox renders SVG icons natively, so no separate raster sizes are needed and
+the icon stays sharp on HiDPI screens. All three have a **transparent
+background** (no tile), so each has to carry itself against whatever sits behind
+it — which is why the fallback stays the accent blue, a colour that survives on
+either toolbar.
+
+`docs/logo.png` is the same mark rendered to a 516×416 raster on a transparent
+background, for places that will not take SVG — a store listing, a repo social
+preview. It is not square, so it is not a substitute for the `icons` entries.
+
+### Theme-aware toolbar icon
+
+`action.theme_icons` (Firefox 109+; Chrome ignores it) swaps the toolbar icon
+with the theme. **The `light`/`dark` keys name the theme's *text* colour, not the
+icon's**, which is the easy part to get backwards:
+
+- `"light"` — a theme using light text, i.e. a **dark** theme → the **white** icon
+- `"dark"` — a theme using dark text, i.e. a **light** theme → the **black** icon
+
+`default_icon` is kept as the blue icon for browsers that ignore `theme_icons`.
+
+### The mark
+
+The glyph is the **real U+1D54F design** (including the doubled
+`top-left → bottom-right` stroke), stored as vector path data rather than live
+`<text>` so it needs no maths font installed — a `<text>` element would render as
+tofu (▯) on systems without one. The outline is derived from **DejaVu Sans Bold**,
+whose permissive licence allows it to be redistributed inside a shipped
+extension; not every font containing the glyph is usable that way. The bold
+weight keeps the glyph legible at 16 px in the toolbar.
+
+Chrome does not support SVG manifest icons, so if you ever port this extension
+there, export PNGs at 16/32/48/96/128 px and reference those instead.
