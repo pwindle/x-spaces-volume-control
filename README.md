@@ -30,9 +30,8 @@ spaces-volume/
 ```
 
 Three vectors of the same mark — the Mathematical Double-Struck Capital X
-(**𝕏**, U+1D54F) with sound waves — all cut from the same real glyph data by
-`tools/glyph-to-svg.py`, and byte-identical apart from the fill colour, so the
-shape cannot drift between them:
+(**𝕏**, U+1D54F) with sound waves — byte-identical apart from the fill colour, so
+the shape cannot drift between them:
 
 | File | Colour | Used for |
 | --- | --- | --- |
@@ -61,38 +60,18 @@ icon's**, which is the easy part to get backwards:
 
 `default_icon` is kept as the blue icon for browsers that ignore `theme_icons`.
 
-The glyph is the **real U+1D54F design**, extracted from a font rather than
-hand-drawn, so it matches the type designer's shape exactly (including the
-doubled `top-left → bottom-right` stroke). It is stored as vector path data
-rather than live `<text>`, so it needs no maths font installed — a `<text>`
-element would render as tofu (▯) on systems without one. Chrome does
-not support SVG manifest icons, so if you ever port this extension there,
-export PNGs at 16/32/48/96/128 px and reference those instead.
+### The mark
 
-### Regenerating the icon
+The glyph is the **real U+1D54F design** (including the doubled
+`top-left → bottom-right` stroke), stored as vector path data rather than live
+`<text>` so it needs no maths font installed — a `<text>` element would render as
+tofu (▯) on systems without one. The outline is derived from **DejaVu Sans Bold**,
+whose permissive licence allows it to be redistributed inside a shipped
+extension; not every font containing the glyph is usable that way. The bold
+weight keeps the glyph legible at 16 px in the toolbar.
 
-`tools/glyph-to-svg.py` does the extraction — `scan` finds installed fonts that
-contain a codepoint, `extract` converts the outline into scaled SVG path data:
-
-```
-python tools/glyph-to-svg.py scan
-python tools/glyph-to-svg.py extract \
-  --font "C:\Windows\Fonts\DejaVuSans-Bold.ttf" \
-  --size 78 --cx 45 --cy 64 --fg "#1d9bf0" \
-  --svg-out spaces-volume/icons/icon.svg
-```
-
-Regenerate with that command rather than hand-editing the path data.
-
-### Why DejaVu Sans Bold?
-
-The outline is embedded in an extension that gets distributed, so the source
-font's licence matters. DejaVu is permissively licensed (Bitstream Vera licence,
-"DejaVu changes are in public domain"), which allows this. Other fonts shipping
-with Windows that contain the glyph — notably **Cambria Math**, the canonical
-maths font — are proprietary ("© Microsoft Corporation. All rights reserved"),
-so their outlines must not be redistributed in an extension. The bold weight also
-keeps the glyph legible at 16 px in the toolbar.
+Chrome does not support SVG manifest icons, so if you ever port this extension
+there, export PNGs at 16/32/48/96/128 px and reference those instead.
 
 ## Screenshots
 
@@ -185,12 +164,10 @@ the extension also patches the page *before* any page script runs:
    reloads, new tabs and X's own player init, and works with X's native volume
    control state.
 
-There is deliberately **no Web Audio support**. An earlier version scaled
-`GainNode.gain` AudioParams (both the `.value` setter and the scheduling methods
-such as `setValueAtTime`). It was dropped after testing against the real player:
-it made no audible difference, and patching a shared AudioParam graph risks
-affecting unrelated audio such as local mic processing. The audible path is the
-media element, handled by (1).
+There is deliberately **no Web Audio support**. The audible path is the media
+element, handled by (1); scaling a shared `GainNode.gain` graph instead would
+risk affecting unrelated audio such as local mic processing, without reaching
+the level the player actually renders at.
 
 Cross-world plumbing: `volume-hook.js` (MAIN) has no extension APIs, so
 `volume-ui.js` (ISOLATED) drives it with `xspaces:volume-set` /
@@ -199,11 +176,11 @@ details pass the isolation boundary intact in every browser).
 
 The popup → tab direction uses `tabs.sendMessage`; if the content script isn't
 there yet (extension reloaded while the tab stayed open) the popup injects both
-scripts on demand with `scripting.executeScript`. A content script left over from
-an **older** version answers unknown messages instead of throwing, so `sendToTab`
-treats that reply as "not there" and the injection happens then too — otherwise
-the setting would silently never apply. Re-injection is safe because
-`volume-ui.js` returns early if a live copy is already installed.
+scripts on demand with `scripting.executeScript`. A stale copy left in the tab
+answers unknown messages instead of throwing, so `sendToTab` treats that reply as
+"not there" and re-injects — otherwise the setting would silently never apply.
+Re-injection is safe because `volume-ui.js` returns early if a live copy is
+already installed.
 
 ### Who owns the level
 
@@ -212,10 +189,10 @@ matters because X's player re-persists *its own* volume periodically and has no
 idea the extension changed anything — so it writes its old value back into
 `localStorage["volume"]`.
 
-An earlier version of this extension *adopted* that value, which produced a nasty
-bug: a second or two after you moved the slider, it snapped back to where it
-started, and the audio reverted with it. The drift poll now does the opposite —
-if the page's stored value drifts from yours, the extension **puts yours back**:
+Adopting that value would make the slider snap back to where it started a second
+or two after you moved it, taking the audio with it. So the 2 s drift poll does
+the opposite — if the page's stored value drifts from yours, the extension
+**puts yours back**:
 
 | Source of change | Handling |
 | --- | --- |
@@ -233,10 +210,10 @@ The hook checks whether it was the first to wrap
 the installed one. If another script wrapped it before or after, the popup shows
 **volume conflict** instead of pretending everything is fine.
 
-This was added after a real case: a general-purpose tab-volume extension was also
-patching media volume, layered on top of ours. It captured our patched descriptor
-as "native", so its writes flowed through our setter, and our level appeared to
-apply only when *its* apply cycle ran. If you see this warning, disable the other
+This catches a real failure mode: a general-purpose tab-volume extension
+patching media volume on top of ours. It can capture our patched descriptor as
+"native", so its writes flow through our setter and our level appears to apply
+only when *its* apply cycle runs. If you see this warning, disable the other
 extension.
 
 ## Troubleshooting
@@ -246,9 +223,9 @@ extension.
 | Popup says "volume conflict" | A second script is patching media volume on this page (usually another Spaces-volume extension). Disable it — two layers of scaling will fight over the level. |
 | Slider changes have no audible effect, other apps work | The level is applied to the tracked media element. If some other extension owns the audio route, disable it and retest. |
 | Slider has no effect | Check the popup status: "hook missing" means reload the tab; "volume conflict" means another extension is fighting for the audio. |
-| Slider snaps back after a moment | Fixed — see "Who owns the level". If you still see it, X has changed the storage key; update `STORAGE_KEY`. |
+| Slider snaps back after a moment | The extension re-asserts your level every 2 s — see "Who owns the level". If it still happens, X has changed the storage key; update `STORAGE_KEY`. |
 | Change only becomes audible after ~30 s | Something else owns the audio route or is re-applying its own level. Check for a "volume conflict" warning and disable the other extension. |
-| Popup changes have no effect on the page | The tab is running a content script from before that feature existed (content scripts only re-inject on a page load). The popup detects this and re-injects automatically; if it still fails, reload the tab. |
+| Popup changes have no effect on the page | The tab is running a stale copy of the content script (content scripts only re-inject on a page load). The popup detects this and re-injects automatically; if it still fails, reload the tab. |
 | Popup says "hook missing" | Reload the tab once so the `document_start` hook runs. |
 | Popup says "not an X tab" | The level is still saved as your default; open `x.com`/`twitter.com`. |
 | No in-page slider | It only shows on Spaces pages or when a Space dock is present; check the popup toggle. |
@@ -263,11 +240,4 @@ Two Node harnesses exercise the logic without a browser (no dependencies):
 ```
 node tools/hook-test.mjs   # volume math: scaling, echo/compounding, clamping, bridge
 node tools/ui-test.mjs     # content-script startup, localStorage writes, popup messaging
-```
-
-`tools/glyph-to-svg.py` (icon generation) is the only thing needing Python, and
-only when regenerating the icon:
-
-```
-python -m pip install fonttools
 ```
